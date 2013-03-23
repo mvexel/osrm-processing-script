@@ -42,7 +42,7 @@ echo "$(date) : osrm-extract"
 #prepare
 echo "$(date) : osrm-prepare" >&3
 echo "$(date) : osrm-prepare"
-./osrm-prepare /osm/north-america.osrm /osm/north-america.osrm.relations || exit $?
+./osrm-prepare /osm/north-america.osrm /osm/north-america.osrm.restrictions || exit $?
 
 echo "$(date) : ---------------- end, halting ----------------" >&3
 echo "$(date) : ---------------- end, halting ----------------"
