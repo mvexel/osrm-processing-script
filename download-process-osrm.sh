@@ -21,6 +21,7 @@ if [[ "$1" == "'-d'"]]; then
 	echo "$(date) : downloading from geofabrik" >&3
 	echo "$(date) : downloading from geofabrik"
 	wget http://download.geofabrik.de/north-america-latest.osm.pbf || exit $?
+	mv north-america-latest.osm.pbf north-america.osm.pbf
 fi
 
 #set cwd
