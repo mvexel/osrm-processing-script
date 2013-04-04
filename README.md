@@ -17,7 +17,7 @@ None of this comes with any warranty, expressed or implied. It works for me.
 
 Quick Start
 -----------
-* Make sure you have the EC2 command line tools installed and configured.
+* Make sure you have the EC2 command line tools [installed and configured](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/setting_up_ec2_command_linux.html).
 * Open `example/launch-instance.sh` in a text editor and tweak the instance settings.
 * Open `example/process-osrm-na.userdata` in a text editor and tweak the OSRM processing execution parameters.
 * Run `example/launch-instance.sh`.
