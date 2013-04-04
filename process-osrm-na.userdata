@@ -1,0 +1,2 @@
+#!/bin/bash
+/osm/osrm-processing-script/download-process-osrm.sh -d http://download.geofabrik.de/north-america/us/utah-latest.osm.pbf -r > /osm/log.out
