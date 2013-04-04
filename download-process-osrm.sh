@@ -5,12 +5,20 @@ sus=false
 filebasename="north-america"
 upd=false
 runserver=false
+url=""
 
-while getopts :db:surh opt
+while getopts :d:b:surh opt
 do
 	case "$opt" in
 		d) 
 			dl=true
+			url=$OPTARG
+			if [[ $url != *.osm.pbf ]]
+			then
+				echo "URL needs to point to a .osm.pbf file"
+				exit 1
+			fi
+			filebasename=`basename $url .osm.pbf`
 		;;
 		b)
 			filebasename=$OPTARG
@@ -27,11 +35,11 @@ do
 		h)
 			cat <<EOF
 
-Usage: `basename $0` [-dsurh] -b basename
+Usage: `basename $0` [-surh] [-d path|-b basename]
   -b	Basename of PBF file (example: -b utah-latest will
-	process /osm/utah-latest.osm.pbf
-  -d	Download PBF first (hardcoded for N-America now,
-	don't use in conjunction with -b)
+	process /osm/utah-latest.osm.pbf)
+  -d	Download PBF first, from path supplied, and process
+	that file into OSRM binaries
   -s 	Suspend instance (halt) upon successful processing
   -u	Update PBF file to current state before processing
   -r	Run OSRM server upon successful processing
@@ -64,34 +72,32 @@ EOF
 	esac
 done
 
+echo "$(date) : ---------------- start ----------------"
+cd /osm || exit $?
+
+#download
+if $dl ; then 
+	cd /osm
+	if [ -f $filebasename.osm.pbf ]; then
+		rm $filebasename.osm.pbf
+	fi
+	echo "$(date) : downloading $filebasename.osm.pbf from geofabrik"
+	wget $url || exit $?
+fi
+
 filename="/osm/$filebasename.osm.pbf"
+
 if [ -f $filename ]; then
-	echo "Using input file $filename"
+	echo "Using file $filename"
 	echo
 else
 	echo "$filename does not exist."
 	exit 1
 fi
 
-updatefilename="/osm/$filebasename-new.osm.pbf"
-
-echo "$(date) : ---------------- start ----------------"
-cd /osm || exit $?
-
-#set cwd
-echo "$(date) : set cwd to /osm"
-cd /osm || exit $?
-
-# download - this is hardcoded for N-America and Geofabrik right now. 
-if $dl ; then
-	echo "$(date) : downloading from geofabrik"
-	wget http://download.geofabrik.de/north-america-latest.osm.pbf || exit $?
-	mv north-america-latest.osm.pbf north-america.osm.pbf
-fi
-
 #update osm data
 if $upd; then
-	#set cwd
+	updatefilename="/osm/$filebasename-new.osm.pbf"
 	cd /osm
 	echo "$(date) : update planet file"
 	/osm/osmupdate $filename $updatefilename || exit $?
@@ -100,7 +106,6 @@ if $upd; then
 	mv $updatefilename $filename || exit $?
 fi
 
-#set cwd
 cd /osm/osrm
 
 #extract
@@ -139,4 +144,24 @@ elif $runserver ; then
 	cd /osm/osrm || exit $?
 	./osrm-routed &
 	echo "$(date) : ---------------- end ----------------"
+	echo
+	echo "Your OSRM server is now running on http://localhost:5000/"
+	echo "Refer to"
+	echo "https://github.com/DennisOSRM/Project-OSRM/wiki/Server-api"
+	echo "for usage examples."
 fi
+
+cat <<EOF
+
+Your data is ready. 
+
+You can now run osrm-routed to start your OSRM server.
+osrm-routed lives in /osm/osrm/ and you need to cd into
+that directory before running it. So:
+
+cd /osm/osrm/
+./osrm-routed
+
+Have fun!
+
+EOF
