@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PRICE=".20"
-SIZE="m2.4xlarge"
+TYPE="m2.4xlarge"
 KEY="maproulette-test"
 USERDATA="process-osrm-na.userdata"
 
@@ -13,7 +13,7 @@ fi
 
 cat <<EOF
 
-Going to request a $SIZE spot instance for bid price $PRICE.
+Going to request a $TYPE spot instance for bid price $PRICE.
 We will use your key pair '$KEY'.
 We will inject $USERDATA as a user data script, which 
 by default will download a N-America planet from Geofabrik,
@@ -23,4 +23,4 @@ Have fun!
 
 EOF
 
-ec2-request-spot-instances ami-dc92f7b5 -p $PRICE -r $SIZE -k $KEY -f $USERDATA
+ec2-request-spot-instances ami-dc92f7b5 -p $PRICE -t $TYPE -k $KEY -f $USERDATA
