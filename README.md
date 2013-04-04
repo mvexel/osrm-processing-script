@@ -13,6 +13,8 @@ The script is intended to be used on an Amazon EC2 instance based on ami-dc92f7b
 
 See the `example/launch-instance.sh` script and the accompanying `.userdata` file to get an idea of how to put this to work for you.
 
+None of this comes with any warranty, expressed or implied. It works for me.
+
 Quick Start
 -----------
 * Make sure you have the EC2 command line tools installed and configured.
@@ -21,8 +23,6 @@ Quick Start
 * Run `example/launch-instance.sh`.
 * Your spot request info will be returned, use it to monitor launching of your instance yourself.
 * After the instance launches, you can log in to it an monitor `/osm/log.out` for progress.
-
-None of this comes with any warranty, expressed or implied. It works for me.
 
 Some things to keep in mind
 ---------------------------
