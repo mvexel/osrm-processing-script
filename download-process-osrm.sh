@@ -6,6 +6,7 @@ filebasename="north-america"
 upd=false
 runserver=false
 url=""
+OSRM_DEVBRANCHNAME="develop"
 
 while getopts :d:b:surh opt
 do
@@ -75,6 +76,12 @@ done
 echo "$(date) : ---------------- start ----------------"
 cd /osm || exit $?
 
+echo "$(date) : updating OSRM"
+cd /osm/osrm || exit $?
+git checkout $OSRM_DEVBRANCHNAME || exit $?
+git pull || exit $?
+scons || exit $?
+
 #download
 if $dl ; then 
 	cd /osm
@@ -118,7 +125,7 @@ echo "$(date) : osrm-prepare"
 
 #finally create timestamp file:
 echo "$(date) : creating timestamp file"
-/osm/osmconvert --out-statistics /osm/utah-latest.osm.pbf | sed -rne "s/timestamp max: (.+)/\1/p" > /osm/$filebasename.osrm.timestamp || exit $?
+/osm/osmconvert --out-statistics /osm/$filebasename.osm.pbf | sed -rne "s/timestamp max: (.+)/\1/p" > /osm/$filebasename.osrm.timestamp || exit $?
 
 #create server.ini
 echo "$(date) : creating server.ini file"
