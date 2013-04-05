@@ -24,4 +24,6 @@
 
 DOWNLOADURL=http://download.geofabrik.de/north-america-latest.osm.pbf 
 
+cd /osm/osrm-processing-script/
+git pull 
 /osm/osrm-processing-script/download-process-osrm.sh -d $DOWNLOADURL -r > /osm/log.out
