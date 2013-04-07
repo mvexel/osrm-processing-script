@@ -16,7 +16,8 @@ cat <<EOF
 Going to request a $TYPE spot instance for bid price $PRICE.
 We will use your key pair '$KEY'.
 We will inject $USERDATA as a user data script, which 
-by default will download a N-America planet from Geofabrik,
+by default will get the latest OSRM code, compile it, 
+then download a N-America planet from Geofabrik,
 process it into OSRM binaries and run the OSRM server.
 
 Have fun!
