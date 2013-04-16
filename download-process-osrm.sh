@@ -80,6 +80,7 @@ echo "$(date) : updating OSRM"
 cd /osm/osrm || exit $?
 git checkout $OSRM_DEVBRANCHNAME || exit $?
 git pull || exit $?
+scons -c || exit $?
 scons || exit $?
 
 #download
